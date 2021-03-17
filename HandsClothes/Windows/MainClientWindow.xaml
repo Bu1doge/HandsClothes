@@ -5,15 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HandsClothes"
         mc:Ignorable="d"
-        Title="Одежда для ручек" Height="600" Width="800" MinHeight="600" MinWidth="800" WindowStartupLocation="CenterScreen">
+        Title="Одежда для ручек" 
+        Height="600" Width="800" 
+        MinHeight="600" MinWidth="800" 
+        WindowStartupLocation="CenterScreen"
+        Icon="/HandsClothes;component/Resourses/Logo.ico"
+        Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
             <RowDefinition/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
 
-        <Frame x:Name="PageBrowser" Grid.Row="1" Margin="5">
+        <Frame x:Name="PageBrowser" Grid.Row="0" Margin="5" NavigationUIVisibility="Hidden">
             
         </Frame>
     </Grid>
