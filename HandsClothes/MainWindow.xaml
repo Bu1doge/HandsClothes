@@ -10,7 +10,11 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition/>
-            <RowDefinition Height="80"/>
+            <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
+
+        <Frame x:Name="PageBrowser" Grid.Row="1" Margin="5">
+            
+        </Frame>
     </Grid>
 </Window>
