@@ -94,5 +94,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EFData\" />
+    <Folder Include="HelperClasses\" />
+    <Folder Include="Pages\" />
+    <Folder Include="Resourses\PhotoUsers\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
