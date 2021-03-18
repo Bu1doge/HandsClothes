@@ -79,7 +79,15 @@
                                 <ColumnDefinition Width="160"/>
                             </Grid.ColumnDefinitions>
 
-                            <Image/>
+                            <Image Stretch="Fill">
+                                <Image.Source>
+                                    <Binding Path="PhotoPath" >
+                                        <Binding.TargetNullValue>
+                                            <ImageSource>/Resourses/nullValuePic.png</ImageSource>
+                                        </Binding.TargetNullValue>
+                                    </Binding>
+                                </Image.Source>
+                            </Image>
 
                             <StackPanel Grid.Column="1">
                                 <WrapPanel Grid.Column="1" Margin="5, 0" HorizontalAlignment="Left">

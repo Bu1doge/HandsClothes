@@ -17,9 +17,6 @@ using HandsClothes.HelperClasses;
 
 namespace HandsClothes.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для ListOfMaterialsPage.xaml
-    /// </summary>
     public partial class ListOfMaterialsPage : Page
     {
         public ListOfMaterialsPage()
