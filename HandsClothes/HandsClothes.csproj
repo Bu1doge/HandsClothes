@@ -116,6 +116,7 @@
     <Compile Include="EFData\Unit.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="HelperClasses\MaterialHelperClass.cs" />
     <Compile Include="HelperClasses\NavigationClass.cs" />
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>

@@ -21,7 +21,7 @@ namespace HandsClothes.EFData
         }
     
         public int Id { get; set; }
-        public string MateriaName { get; set; }
+        public string MaterialName { get; set; }
         public int MaterialTypeId { get; set; }
         public string PhotoPath { get; set; }
         public decimal Price { get; set; }

@@ -9,7 +9,8 @@
       d:DesignWidth="790" 
       MinHeight="460" 
       MinWidth="790"
-      Title="ListOfMaterialsPage">
+      Title="ListOfMaterialsPage"
+      Loaded="Page_Loaded">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -58,13 +59,16 @@
                      Margin="5"/>
         </StackPanel>
 
+        <!--Лист материалов-->
         <ListView Grid.Row="2"
-                  x:Name="MaterialLV">
-            <ListView.ItemTemplate>
+                  x:Name="MaterialLV"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            
+            <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="Black" 
                         BorderThickness="1"
-                        Width="Auto"
+                        MinWidth="600"
                         Height="120"
                         Margin="5">
                         
@@ -83,23 +87,13 @@
                                        HorizontalAlignment="Left"
                                        FontSize="15"
                                        FontFamily="Candara"
-                                       Text="Тип материала:"/>
-
-                                    <TextBlock Margin="5, 5, 0, 5"
-                                       HorizontalAlignment="Left"
-                                       FontSize="15"
-                                       FontFamily="Candara"/>
+                                       Text="{Binding StringFormat=Тип материала: {0}, Path=MaterialType.MaterialType1}"/>
 
                                     <TextBlock Margin="5, 5, 0, 5"
                                        HorizontalAlignment="Left"
                                        FontSize="15"
                                        FontFamily="Candara"
-                                       Text="| Наиминование материала:"/>
-
-                                    <TextBlock Margin="5, 5, 0, 5"
-                                       HorizontalAlignment="Left"
-                                       FontSize="15"
-                                       FontFamily="Candara"/>
+                                       Text="{Binding StringFormat= | Наиминование материала: {0}, Path=MaterialName}"/>
                                 </WrapPanel>
 
                                 <WrapPanel Grid.Column="1" Margin="5, 0" HorizontalAlignment="Left">
@@ -107,12 +101,7 @@
                                        HorizontalAlignment="Left"
                                        FontSize="12"
                                        FontFamily="Candara"
-                                       Text="Минимальное количество:"/>
-
-                                    <TextBlock Margin="5, 5, 0, 0"
-                                       HorizontalAlignment="Left"
-                                       FontSize="12"
-                                       FontFamily="Candara"/>
+                                       Text="{Binding StringFormat=Минимальное количество: {0}, Path=MinimalAmount}"/>
 
                                 </WrapPanel>
 
@@ -126,7 +115,8 @@
                                     <TextBlock Margin="5, 5, 0, 0"
                                        HorizontalAlignment="Left"
                                        FontSize="12"
-                                       FontFamily="Candara"/>
+                                       FontFamily="Candara"
+                                       Text=""/>
 
                                 </WrapPanel>
                             </StackPanel>
@@ -143,11 +133,12 @@
                                FontSize="18"
                                FontFamily="Candara" 
                                TextWrapping="Wrap"
-                               Grid.Column="2"/>
+                               Grid.Column="2"
+                               Text="{Binding Path=QtyInStock}"/>
                         </Grid>
                     </Border>
                 </DataTemplate>
-            </ListView.ItemTemplate>
+            </ListBox.ItemTemplate>
         </ListView>
     </Grid>
 </Page>

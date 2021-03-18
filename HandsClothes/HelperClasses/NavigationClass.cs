@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace HandsClothes.HelperClasses
 {
-    class NavigationClass
+    static class NavigationClass
     {
-        public static Frame nframe;
+        public static NavigationService Nav;
     }
 }

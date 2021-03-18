@@ -5,16 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="9a8d5aae78be44638f02b7c716a21e79" Name="Diagram1">
-        <EntityTypeShape EntityType="HandsClothesModel.Material" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="HandsClothesModel.MaterialType" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
         <EntityTypeShape EntityType="HandsClothesModel.Suplier" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="HandsClothesModel.SuplierType" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
         <EntityTypeShape EntityType="HandsClothesModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="HandsClothesModel.Unit" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
-        <AssociationConnector Association="HandsClothesModel.FK__Material__Materi__2E1BDC42" ManuallyRouted="false" />
-        <AssociationConnector Association="HandsClothesModel.FK__Material__UnitId__32E0915F" ManuallyRouted="false" />
         <AssociationConnector Association="HandsClothesModel.FK__Suplier__Suplier__33D4B598" ManuallyRouted="false" />
-        <AssociationConnector Association="HandsClothesModel.MaterialSuplier" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="HandsClothesModel.Material" Width="1.5" PointX="3" PointY="1" />
+        <AssociationConnector Association="HandsClothesModel.FK__Material__Materi__2E1BDC42" />
+        <AssociationConnector Association="HandsClothesModel.FK__Material__UnitId__32E0915F" />
+        <AssociationConnector Association="HandsClothesModel.MaterialSuplier" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

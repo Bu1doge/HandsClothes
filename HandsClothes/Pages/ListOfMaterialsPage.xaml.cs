@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using HandsClothes.EFData;
+using HandsClothes.HelperClasses;
 
 namespace HandsClothes.Pages
 {
@@ -23,6 +25,22 @@ namespace HandsClothes.Pages
         public ListOfMaterialsPage()
         {
             InitializeComponent();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            MaterialLV.ItemsSource = Filter();
+
+            //SearchTxt.Text = MaterialHelperClass.StringOfMeterialSupliers(2);
+        }
+
+        private List<Material> Filter()
+        {
+            List<Material> FilterResult = MaterialHelperClass.GetAllMaterias();
+
+
+
+            return FilterResult;
         }
     }
 }
