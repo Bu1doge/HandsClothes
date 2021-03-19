@@ -8,6 +8,6 @@ namespace HandsClothes.EFData
 {
     public class DataFrame
     {
-        public static HandsClothesEntities Context { get; } = new HandsClothesEntities();
+        public static Entities Context { get; } = new Entities();
     }
 }

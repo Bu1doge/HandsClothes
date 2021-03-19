@@ -12,18 +12,15 @@ namespace HandsClothes.EFData
     using System;
     using System.Collections.Generic;
     
-    public partial class MaterialType
+    public partial class MaterialQtyChangeHistory
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MaterialType()
-        {
-            this.Material = new HashSet<Material>();
-        }
+        public long Id { get; set; }
+        public int MaterialId { get; set; }
+        public string Action { get; set; }
+        public Nullable<int> OldQtyValue { get; set; }
+        public int NewQtyValue { get; set; }
+        public System.DateTime ChangeDateTime { get; set; }
     
-        public int Id { get; set; }
-        public string Type { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Material> Material { get; set; }
+        public virtual Material Material { get; set; }
     }
 }

@@ -12,18 +12,13 @@ namespace HandsClothes.EFData
     using System;
     using System.Collections.Generic;
     
-    public partial class MaterialType
+    public partial class VW_MaterialSuplier
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MaterialType()
-        {
-            this.Material = new HashSet<Material>();
-        }
-    
-        public int Id { get; set; }
-        public string Type { get; set; }
-    
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Material> Material { get; set; }
+        public string MaterialType { get; set; }
+        public string MaterialName { get; set; }
+        public int MinimalAmount { get; set; }
+        public int QtyInStock { get; set; }
+        public string Supliers { get; set; }
+        public string PhotoPath { get; set; }
     }
 }

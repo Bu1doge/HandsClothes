@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Хранилище HandsClothesModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище HandsClothesModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Material">
           <Key>
             <PropertyRef Name="Id" />
@@ -19,6 +19,17 @@
           <Property Name="InPackAmount" Type="int" Nullable="false" />
           <Property Name="UnitId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="MaterialQtyChangeHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaterialId" Type="int" Nullable="false" />
+          <Property Name="Action" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="OldQtyValue" Type="int" />
+          <Property Name="NewQtyValue" Type="int" Nullable="false" />
+          <Property Name="ChangeDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="MaterialSuplier">
           <Key>
             <PropertyRef Name="MaterialId" />
@@ -32,7 +43,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="MaterialType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Suplier">
           <Key>
@@ -68,6 +79,21 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UnitName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "HandsClothes.dbo.VW_MaterialSuplier" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="VW_MaterialSuplier">
+          <Key>
+            <PropertyRef Name="MaterialName" />
+            <PropertyRef Name="MinimalAmount" />
+            <PropertyRef Name="QtyInStock" />
+          </Key>
+          <Property Name="MaterialType" Type="nvarchar" MaxLength="50" />
+          <Property Name="MaterialName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MinimalAmount" Type="int" Nullable="false" />
+          <Property Name="QtyInStock" Type="int" Nullable="false" />
+          <Property Name="Supliers" Type="nvarchar" MaxLength="4000" />
+          <Property Name="PhotoPath" Type="nvarchar" MaxLength="255" />
         </EntityType>
         <Association Name="FK__Material__Materi__2E1BDC42">
           <End Role="MaterialType" Type="Self.MaterialType" Multiplicity="1" />
@@ -129,6 +155,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_MaterialQtyChangeHistory_Material">
+          <End Role="Material" Type="Self.Material" Multiplicity="1" />
+          <End Role="MaterialQtyChangeHistory" Type="Self.MaterialQtyChangeHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Material">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MaterialQtyChangeHistory">
+              <PropertyRef Name="MaterialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
@@ -162,12 +200,23 @@
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="Хранилище HandsClothesModelContainer">
           <EntitySet Name="Material" EntityType="Self.Material" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MaterialQtyChangeHistory" EntityType="Self.MaterialQtyChangeHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MaterialSuplier" EntityType="Self.MaterialSuplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MaterialType" EntityType="Self.MaterialType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Suplier" EntityType="Self.Suplier" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SuplierType" EntityType="Self.SuplierType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VW_MaterialSuplier" EntityType="Self.VW_MaterialSuplier" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VW_MaterialSuplier].[MaterialType] AS [MaterialType], 
+    [VW_MaterialSuplier].[MaterialName] AS [MaterialName], 
+    [VW_MaterialSuplier].[MinimalAmount] AS [MinimalAmount], 
+    [VW_MaterialSuplier].[QtyInStock] AS [QtyInStock], 
+    [VW_MaterialSuplier].[Supliers] AS [Supliers], 
+    [VW_MaterialSuplier].[PhotoPath] AS [PhotoPath]
+    FROM [dbo].[VW_MaterialSuplier] AS [VW_MaterialSuplier]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__Material__Materi__2E1BDC42" Association="Self.FK__Material__Materi__2E1BDC42">
             <End Role="MaterialType" EntitySet="MaterialType" />
             <End Role="Material" EntitySet="Material" />
@@ -188,18 +237,53 @@
             <End Role="SuplierType" EntitySet="SuplierType" />
             <End Role="Suplier" EntitySet="Suplier" />
           </AssociationSet>
+          <AssociationSet Name="FK_MaterialQtyChangeHistory_Material" Association="Self.FK_MaterialQtyChangeHistory_Material">
+            <End Role="Material" EntitySet="Material" />
+            <End Role="MaterialQtyChangeHistory" EntitySet="MaterialQtyChangeHistory" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HandsClothesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Material">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaterialName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MaterialTypeId" Type="Int32" Nullable="false" />
+          <Property Name="PhotoPath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="QtyInStock" Type="Int32" Nullable="false" />
+          <Property Name="MinimalAmount" Type="Int32" Nullable="false" />
+          <Property Name="InPackAmount" Type="Int32" Nullable="false" />
+          <Property Name="UnitId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="MaterialType" Relationship="Self.FK__Material__Materi__2E1BDC42" FromRole="Material" ToRole="MaterialType" />
+          <NavigationProperty Name="Unit" Relationship="Self.FK__Material__UnitId__32E0915F" FromRole="Material" ToRole="Unit" />
+          <NavigationProperty Name="MaterialQtyChangeHistory" Relationship="Self.FK_MaterialQtyChangeHistory_Material" FromRole="Material" ToRole="MaterialQtyChangeHistory" />
+          <NavigationProperty Name="Suplier" Relationship="Self.MaterialSuplier" FromRole="Material" ToRole="Suplier" />
+        </EntityType>
+        <EntityType Name="MaterialQtyChangeHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaterialId" Type="Int32" Nullable="false" />
+          <Property Name="Action" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OldQtyValue" Type="Int32" />
+          <Property Name="NewQtyValue" Type="Int32" Nullable="false" />
+          <Property Name="ChangeDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Material" Relationship="Self.FK_MaterialQtyChangeHistory_Material" FromRole="MaterialQtyChangeHistory" ToRole="Material" />
+        </EntityType>
         <EntityType Name="MaterialType">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MaterialType1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Material" Relationship="HandsClothesModel.FK__Material__Materi__2E1BDC42" FromRole="MaterialType" ToRole="Material" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Material" Relationship="Self.FK__Material__Materi__2E1BDC42" FromRole="MaterialType" ToRole="Material" />
         </EntityType>
         <EntityType Name="Suplier">
           <Key>
@@ -212,7 +296,7 @@
           <Property Name="Rating" Type="Decimal" Precision="3" Scale="0" Nullable="false" />
           <Property Name="CooperationBeginDate" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="SuplierType" Relationship="Self.FK__Suplier__Suplier__33D4B598" FromRole="Suplier" ToRole="SuplierType" />
-          <NavigationProperty Name="Material" Relationship="HandsClothesModel.MaterialSuplier" FromRole="Suplier" ToRole="Material" />
+          <NavigationProperty Name="Material" Relationship="Self.MaterialSuplier" FromRole="Suplier" ToRole="Material" />
         </EntityType>
         <EntityType Name="SuplierType">
           <Key>
@@ -238,8 +322,57 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UnitName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Material" Relationship="HandsClothesModel.FK__Material__UnitId__32E0915F" FromRole="Unit" ToRole="Material" />
+          <NavigationProperty Name="Material" Relationship="Self.FK__Material__UnitId__32E0915F" FromRole="Unit" ToRole="Material" />
         </EntityType>
+        <EntityType Name="VW_MaterialSuplier">
+          <Key>
+            <PropertyRef Name="MaterialName" />
+            <PropertyRef Name="MinimalAmount" />
+            <PropertyRef Name="QtyInStock" />
+          </Key>
+          <Property Name="MaterialType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MaterialName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MinimalAmount" Type="Int32" Nullable="false" />
+          <Property Name="QtyInStock" Type="Int32" Nullable="false" />
+          <Property Name="Supliers" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="PhotoPath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK__Material__Materi__2E1BDC42">
+          <End Role="MaterialType" Type="Self.MaterialType" Multiplicity="1" />
+          <End Role="Material" Type="Self.Material" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MaterialType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Material">
+              <PropertyRef Name="MaterialTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Material__UnitId__32E0915F">
+          <End Role="Unit" Type="Self.Unit" Multiplicity="1" />
+          <End Role="Material" Type="Self.Material" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Material">
+              <PropertyRef Name="UnitId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MaterialQtyChangeHistory_Material">
+          <End Role="Material" Type="Self.Material" Multiplicity="1" />
+          <End Role="MaterialQtyChangeHistory" Type="Self.MaterialQtyChangeHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Material">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MaterialQtyChangeHistory">
+              <PropertyRef Name="MaterialId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Suplier__Suplier__33D4B598">
           <End Role="SuplierType" Type="Self.SuplierType" Multiplicity="1" />
           <End Role="Suplier" Type="Self.Suplier" Multiplicity="*" />
@@ -252,14 +385,37 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="HandsClothesEntities" annotation:LazyLoadingEnabled="true">
+        <Association Name="MaterialSuplier">
+          <End Role="Material" Type="Self.Material" Multiplicity="*" />
+          <End Role="Suplier" Type="Self.Suplier" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Material" EntityType="Self.Material" />
+          <EntitySet Name="MaterialQtyChangeHistory" EntityType="Self.MaterialQtyChangeHistory" />
           <EntitySet Name="MaterialType" EntityType="Self.MaterialType" />
           <EntitySet Name="Suplier" EntityType="Self.Suplier" />
           <EntitySet Name="SuplierType" EntityType="Self.SuplierType" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="Unit" EntityType="Self.Unit" />
+          <EntitySet Name="VW_MaterialSuplier" EntityType="Self.VW_MaterialSuplier" />
+          <AssociationSet Name="FK__Material__Materi__2E1BDC42" Association="Self.FK__Material__Materi__2E1BDC42">
+            <End Role="MaterialType" EntitySet="MaterialType" />
+            <End Role="Material" EntitySet="Material" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Material__UnitId__32E0915F" Association="Self.FK__Material__UnitId__32E0915F">
+            <End Role="Unit" EntitySet="Unit" />
+            <End Role="Material" EntitySet="Material" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MaterialQtyChangeHistory_Material" Association="Self.FK_MaterialQtyChangeHistory_Material">
+            <End Role="Material" EntitySet="Material" />
+            <End Role="MaterialQtyChangeHistory" EntitySet="MaterialQtyChangeHistory" />
+          </AssociationSet>
           <AssociationSet Name="FK__Suplier__Suplier__33D4B598" Association="Self.FK__Suplier__Suplier__33D4B598">
             <End Role="SuplierType" EntitySet="SuplierType" />
+            <End Role="Suplier" EntitySet="Suplier" />
+          </AssociationSet>
+          <AssociationSet Name="MaterialSuplier" Association="Self.MaterialSuplier">
+            <End Role="Material" EntitySet="Material" />
             <End Role="Suplier" EntitySet="Suplier" />
           </AssociationSet>
           <FunctionImport Name="sp_alterdiagram">
@@ -292,19 +448,6 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
-          <EntitySet Name="Material" EntityType="HandsClothesModel.Material" />
-          <AssociationSet Name="FK__Material__Materi__2E1BDC42" Association="HandsClothesModel.FK__Material__Materi__2E1BDC42">
-            <End Role="MaterialType" EntitySet="MaterialType" />
-            <End Role="Material" EntitySet="Material" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Material__UnitId__32E0915F" Association="HandsClothesModel.FK__Material__UnitId__32E0915F">
-            <End Role="Unit" EntitySet="Unit" />
-            <End Role="Material" EntitySet="Material" />
-          </AssociationSet>
-          <AssociationSet Name="MaterialSuplier" Association="HandsClothesModel.MaterialSuplier">
-            <End Role="Material" EntitySet="Material" />
-            <End Role="Suplier" EntitySet="Suplier" />
-          </AssociationSet>
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -317,62 +460,44 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
-        <EntityType Name="Material">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MaterialName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="MaterialTypeId" Type="Int32" Nullable="false" />
-          <Property Name="PhotoPath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Price" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
-          <Property Name="QtyInStock" Type="Int32" Nullable="false" />
-          <Property Name="MinimalAmount" Type="Int32" Nullable="false" />
-          <Property Name="InPackAmount" Type="Int32" Nullable="false" />
-          <Property Name="UnitId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="MaterialType" Relationship="HandsClothesModel.FK__Material__Materi__2E1BDC42" FromRole="Material" ToRole="MaterialType" />
-          <NavigationProperty Name="Unit" Relationship="HandsClothesModel.FK__Material__UnitId__32E0915F" FromRole="Material" ToRole="Unit" />
-          <NavigationProperty Name="Suplier" Relationship="HandsClothesModel.MaterialSuplier" FromRole="Material" ToRole="Suplier" />
-        </EntityType>
-        <Association Name="FK__Material__Materi__2E1BDC42">
-          <End Type="HandsClothesModel.MaterialType" Role="MaterialType" Multiplicity="1" />
-          <End Type="HandsClothesModel.Material" Role="Material" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MaterialType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Material">
-              <PropertyRef Name="MaterialTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Material__UnitId__32E0915F">
-          <End Type="HandsClothesModel.Unit" Role="Unit" Multiplicity="1" />
-          <End Type="HandsClothesModel.Material" Role="Material" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Unit">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Material">
-              <PropertyRef Name="UnitId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="MaterialSuplier">
-          <End Type="HandsClothesModel.Material" Role="Material" Multiplicity="*" />
-          <End Type="HandsClothesModel.Suplier" Role="Suplier" Multiplicity="*" />
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище HandsClothesModelContainer" CdmEntityContainer="HandsClothesEntities">
+        <EntityContainerMapping StorageEntityContainer="Хранилище HandsClothesModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Material">
+            <EntityTypeMapping TypeName="HandsClothesModel.Material">
+              <MappingFragment StoreEntitySet="Material">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+                <ScalarProperty Name="MaterialTypeId" ColumnName="MaterialTypeId" />
+                <ScalarProperty Name="PhotoPath" ColumnName="PhotoPath" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
+                <ScalarProperty Name="MinimalAmount" ColumnName="MinimalAmount" />
+                <ScalarProperty Name="InPackAmount" ColumnName="InPackAmount" />
+                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MaterialQtyChangeHistory">
+            <EntityTypeMapping TypeName="HandsClothesModel.MaterialQtyChangeHistory">
+              <MappingFragment StoreEntitySet="MaterialQtyChangeHistory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="OldQtyValue" ColumnName="OldQtyValue" />
+                <ScalarProperty Name="NewQtyValue" ColumnName="NewQtyValue" />
+                <ScalarProperty Name="ChangeDateTime" ColumnName="ChangeDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="MaterialType">
             <EntityTypeMapping TypeName="HandsClothesModel.MaterialType">
               <MappingFragment StoreEntitySet="MaterialType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="MaterialType1" ColumnName="MaterialType" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -415,6 +540,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="VW_MaterialSuplier">
+            <EntityTypeMapping TypeName="HandsClothesModel.VW_MaterialSuplier">
+              <MappingFragment StoreEntitySet="VW_MaterialSuplier">
+                <ScalarProperty Name="MaterialType" ColumnName="MaterialType" />
+                <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+                <ScalarProperty Name="MinimalAmount" ColumnName="MinimalAmount" />
+                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
+                <ScalarProperty Name="Supliers" ColumnName="Supliers" />
+                <ScalarProperty Name="PhotoPath" ColumnName="PhotoPath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="MaterialSuplier" TypeName="HandsClothesModel.MaterialSuplier" StoreEntitySet="MaterialSuplier">
+            <EndProperty Name="Material">
+              <ScalarProperty Name="Id" ColumnName="MaterialId" />
+            </EndProperty>
+            <EndProperty Name="Suplier">
+              <ScalarProperty Name="Id" ColumnName="SuplierId" />
+            </EndProperty>
+          </AssociationSetMapping>
           <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="Хранилище HandsClothesModel.sp_alterdiagram" />
           <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="Хранилище HandsClothesModel.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="Хранилище HandsClothesModel.sp_dropdiagram" />
@@ -439,29 +584,6 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Хранилище HandsClothesModel.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Хранилище HandsClothesModel.sp_upgraddiagrams" />
-          <EntitySetMapping Name="Material">
-            <EntityTypeMapping TypeName="HandsClothesModel.Material">
-              <MappingFragment StoreEntitySet="Material">
-                <ScalarProperty Name="UnitId" ColumnName="UnitId" />
-                <ScalarProperty Name="InPackAmount" ColumnName="InPackAmount" />
-                <ScalarProperty Name="MinimalAmount" ColumnName="MinimalAmount" />
-                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="PhotoPath" ColumnName="PhotoPath" />
-                <ScalarProperty Name="MaterialTypeId" ColumnName="MaterialTypeId" />
-                <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <AssociationSetMapping Name="MaterialSuplier" TypeName="HandsClothesModel.MaterialSuplier" StoreEntitySet="MaterialSuplier">
-            <EndProperty Name="Suplier">
-              <ScalarProperty Name="Id" ColumnName="SuplierId" />
-            </EndProperty>
-            <EndProperty Name="Material">
-              <ScalarProperty Name="Id" ColumnName="MaterialId" />
-            </EndProperty>
-          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

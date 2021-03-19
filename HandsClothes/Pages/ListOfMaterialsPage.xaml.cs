@@ -19,6 +19,9 @@ namespace HandsClothes.Pages
 {
     public partial class ListOfMaterialsPage : Page
     {
+        private int PageNumber = 0;
+        private int NumberOfPages;
+
         public ListOfMaterialsPage()
         {
             InitializeComponent();
@@ -27,17 +30,41 @@ namespace HandsClothes.Pages
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             MaterialLV.ItemsSource = Filter();
-
-            //SearchTxt.Text = MaterialHelperClass.StringOfMeterialSupliers(2);
         }
 
-        private List<Material> Filter()
+        private void ListViewRefresh()
         {
-            List<Material> FilterResult = MaterialHelperClass.GetAllMaterias();
+            MaterialLV.ItemsSource = Filter();
+        }
 
+        private List<VW_MaterialSuplier> Filter()
+        {
+            List<VW_MaterialSuplier> MaterialList = DataFrame.Context.VW_MaterialSuplier.ToList();
 
+            NumberOfPages = MaterialList.Count / 15 + (MaterialList.Count % 15 > 0 ? 1 : 0);
+            MaterialList  = MaterialList.OrderBy(i => i.MaterialName).Skip(PageNumber * 15).Take(15).ToList();
 
-            return FilterResult;
+            return MaterialList;
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            PageNumber -= PageNumber == 0 ? 0 : 1;
+            ListViewRefresh();
+        }
+
+        private void Forward_Click(object sender, RoutedEventArgs e)
+        {
+            PageNumber += PageNumber == NumberOfPages - 1 ? 0 : 1;
+            ListViewRefresh();
+        }
+
+        private void PageNum_Click(object sender, RoutedEventArgs e)
+        {
+            Button root = (Button)sender;
+
+            PageNumber = int.Parse(root.Content.ToString()) - 1;
+            ListViewRefresh();
         }
     }
 }

@@ -15,10 +15,10 @@ namespace HandsClothes.EFData
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class HandsClothesEntities : DbContext
+    public partial class Entities : DbContext
     {
-        public HandsClothesEntities()
-            : base("name=HandsClothesEntities")
+        public Entities()
+            : base("name=Entities")
         {
         }
     
@@ -27,12 +27,14 @@ namespace HandsClothes.EFData
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Material> Material { get; set; }
+        public virtual DbSet<MaterialQtyChangeHistory> MaterialQtyChangeHistory { get; set; }
         public virtual DbSet<MaterialType> MaterialType { get; set; }
         public virtual DbSet<Suplier> Suplier { get; set; }
         public virtual DbSet<SuplierType> SuplierType { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Unit> Unit { get; set; }
-        public virtual DbSet<Material> Material { get; set; }
+        public virtual DbSet<VW_MaterialSuplier> VW_MaterialSuplier { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

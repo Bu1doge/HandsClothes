@@ -9,7 +9,7 @@ namespace HandsClothes.HelperClasses
 {
     class MaterialHelperClass
     {
-        public static List<Material> GetAllMaterias()
+        public static List<Material> GetAllMaterials()
         {
             var query = (from item in DataFrame.Context.Material 
                          select item);

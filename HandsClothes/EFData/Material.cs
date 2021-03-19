@@ -17,6 +17,7 @@ namespace HandsClothes.EFData
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Material()
         {
+            this.MaterialQtyChangeHistory = new HashSet<MaterialQtyChangeHistory>();
             this.Suplier = new HashSet<Suplier>();
         }
     
@@ -32,6 +33,8 @@ namespace HandsClothes.EFData
     
         public virtual MaterialType MaterialType { get; set; }
         public virtual Unit Unit { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<MaterialQtyChangeHistory> MaterialQtyChangeHistory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Suplier> Suplier { get; set; }
     }

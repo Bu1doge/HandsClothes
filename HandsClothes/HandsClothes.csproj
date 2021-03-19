@@ -95,6 +95,9 @@
     <Compile Include="EFData\Material.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EFData\MaterialQtyChangeHistory.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EFData\MaterialType.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
@@ -116,6 +119,10 @@
     <Compile Include="EFData\Unit.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EFData\VW_MaterialSuplier.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="HelperClasses\MaterialExtention.cs" />
     <Compile Include="HelperClasses\MaterialHelperClass.cs" />
     <Compile Include="HelperClasses\NavigationClass.cs" />
     <Compile Include="Window1.xaml.cs">
@@ -167,18 +174,19 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="EFData\DBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DBModel.Context.cs</LastGenOutput>
       <DependentUpon>DBModel.edmx</DependentUpon>
+      <LastGenOutput>DBModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="EFData\DBModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DBModel.edmx</DependentUpon>
       <LastGenOutput>DBModel.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Resourses\nullValuePic.png" />
     <Resource Include="Resourses\PhotoMaterials\materials\material_1.jpeg" />
     <Resource Include="Resourses\PhotoMaterials\materials\material_10.jpeg" />

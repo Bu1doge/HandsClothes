@@ -79,15 +79,7 @@
                                 <ColumnDefinition Width="160"/>
                             </Grid.ColumnDefinitions>
 
-                            <Image Stretch="Fill">
-                                <Image.Source>
-                                    <Binding Path="PhotoPath" >
-                                        <Binding.TargetNullValue>
-                                            <ImageSource>/Resourses/nullValuePic.png</ImageSource>
-                                        </Binding.TargetNullValue>
-                                    </Binding>
-                                </Image.Source>
-                            </Image>
+                            <Image Stretch="Fill" Source="{Binding Path=GetImage}"/>
 
                             <StackPanel Grid.Column="1">
                                 <WrapPanel Grid.Column="1" Margin="5, 0" HorizontalAlignment="Left">
@@ -95,13 +87,8 @@
                                        HorizontalAlignment="Left"
                                        FontSize="15"
                                        FontFamily="Candara"
-                                       Text="{Binding StringFormat=Тип материала: {0}, Path=MaterialType.MaterialType1}"/>
+                                       Text="{Binding Path=GetTypeAndName}"/>
 
-                                    <TextBlock Margin="5, 5, 0, 5"
-                                       HorizontalAlignment="Left"
-                                       FontSize="15"
-                                       FontFamily="Candara"
-                                       Text="{Binding StringFormat= | Наиминование материала: {0}, Path=MaterialName}"/>
                                 </WrapPanel>
 
                                 <WrapPanel Grid.Column="1" Margin="5, 0" HorizontalAlignment="Left">
@@ -148,5 +135,13 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListView>
+
+        <WrapPanel Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 20, 0">
+            <Button x:Name="Back"    Background="White" Margin="5" FontSize="12" Click="Back_Click"    Content="Назад"/>
+            <Button x:Name="First"   Background="White" Margin="5" FontSize="12" Click="PageNum_Click" Content="1"/>
+            <Button x:Name="Second"  Background="White" Margin="5" FontSize="12" Click="PageNum_Click" Content="2"/>
+            <Button x:Name="Third"   Background="White" Margin="5" FontSize="12" Click="PageNum_Click" Content="3"/>
+            <Button x:Name="Forward" Background="White" Margin="5" FontSize="12" Click="Forward_Click" Content="Вперед"/>
+        </WrapPanel>
     </Grid>
 </Page>
