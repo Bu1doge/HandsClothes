@@ -31,7 +31,7 @@
                        HorizontalAlignment="Left" 
                        VerticalAlignment="Center" 
                        FontSize="34" 
-                       FontFamily="Candara"></TextBlock>
+                       FontFamily="Candara"/>
         </StackPanel>
 
        <!--Поля фильтрации-->
@@ -42,7 +42,8 @@
                      Width="200" 
                      FontFamily="Candara" 
                      FontSize="20" 
-                     Margin="5"/>
+                     Margin="5"
+                     TextChanged="SearchTxt_TextChanged"/>
 
             <ComboBox x:Name="SortCMB" 
                      VerticalAlignment="Center" 
@@ -59,7 +60,12 @@
                      FontSize="20" 
                      Margin="5"
                      DropDownClosed="FilterCMB_SelectionChanged"/>
-
+            <TextBlock x:Name="RecordsAmountTXTB" 
+                       Margin="10, 5" 
+                       HorizontalAlignment="Left" 
+                       VerticalAlignment="Center" 
+                       FontSize="20" 
+                       FontFamily="Candara"/>
         </StackPanel>
 
         <!--Лист материалов-->
@@ -75,7 +81,7 @@
                         Height="120"
                         Margin="5">
                         
-                        <Grid>
+                        <Grid Background="{Binding Path=QTYColor}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="1*"/>
@@ -138,6 +144,15 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListView>
+
+        <Button Grid.Row="3" 
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Left"
+                Margin="20, 0, 0, 0" 
+                FontSize="16" 
+                Content="Изменить мин. знач."
+                Background="White"
+                Click="MinimalChange_Click"/>
 
         <WrapPanel Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 20, 0">
             <Button x:Name="BTN_Pageack"     BorderThickness="0" Background="White" Margin="5" FontSize="12" Click="Back_Click"    Content="Назад"/>

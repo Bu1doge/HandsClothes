@@ -64,6 +64,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Windows\MinimalChangeModalWindow.xaml.cs">
+      <DependentUpon>MinimalChangeModalWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Window1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -119,6 +122,9 @@
     <Compile Include="EFData\Unit.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="EFData\VW_MaterialDetails.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EFData\VW_MaterialSuplier.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
@@ -133,6 +139,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Pages\ListOfMaterialsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\MinimalChangeModalWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

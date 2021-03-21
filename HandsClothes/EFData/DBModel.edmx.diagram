@@ -18,6 +18,7 @@
         <AssociationConnector Association="HandsClothesModel.FK_MaterialQtyChangeHistory_Material" ManuallyRouted="false" />
         <AssociationConnector Association="HandsClothesModel.FK__Suplier__Suplier__33D4B598" ManuallyRouted="false" />
         <AssociationConnector Association="HandsClothesModel.MaterialSuplier" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="HandsClothesModel.VW_MaterialDetails" Width="1.5" PointX="5.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

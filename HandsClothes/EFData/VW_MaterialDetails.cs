@@ -12,15 +12,14 @@ namespace HandsClothes.EFData
     using System;
     using System.Collections.Generic;
     
-    public partial class VW_MaterialSuplier
+    public partial class VW_MaterialDetails
     {
-        public string MaterialType { get; set; }
-        public string MaterialName { get; set; }
-        public int MinimalAmount { get; set; }
-        public int QtyInStock { get; set; }
-        public string Supliers { get; set; }
-        public string PhotoPath { get; set; }
-        public decimal Price { get; set; }
-        public string QTYColor { get; set; }
+        public string Тип_материала { get; set; }
+        public string Наименование_материала { get; set; }
+        public int Количество_на_складе { get; set; }
+        public Nullable<int> Количество_возможных_поставщиков { get; set; }
+        public string Текущая_стоимость { get; set; }
+        public Nullable<int> Кол_во_на_начало_месаца { get; set; }
+        public string Описание { get; set; }
     }
 }

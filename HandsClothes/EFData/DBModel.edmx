@@ -82,6 +82,21 @@
           <Property Name="UnitName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "HandsClothes.dbo.VW_MaterialDetails" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="VW_MaterialDetails">
+          <Key>
+            <PropertyRef Name="Наименование материала" />
+            <PropertyRef Name="Количество на складе" />
+          </Key>
+          <Property Name="Тип материала" Type="nvarchar" MaxLength="50" />
+          <Property Name="Наименование материала" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Количество на складе" Type="int" Nullable="false" />
+          <Property Name="Количество возможных поставщиков" Type="int" />
+          <Property Name="Текущая стоимость" Type="nvarchar" MaxLength="35" />
+          <Property Name="Кол-во на начало месаца" Type="int" />
+          <Property Name="Описание" Type="nvarchar" MaxLength="53" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
 предупреждение 6002: В таблице или представлении "HandsClothes.dbo.VW_MaterialSuplier" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="VW_MaterialSuplier">
           <Key>
@@ -97,6 +112,7 @@
           <Property Name="Supliers" Type="nvarchar" MaxLength="4000" />
           <Property Name="PhotoPath" Type="nvarchar" MaxLength="255" />
           <Property Name="Price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="QTYColor" Type="nvarchar" MaxLength="7" />
         </EntityType>
         <Association Name="FK__Material__Materi__2E1BDC42">
           <End Role="MaterialType" Type="Self.MaterialType" Multiplicity="1" />
@@ -171,6 +187,10 @@
           </ReferentialConstraint>
         </Association>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="FN_QTYInStockEstimationColor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="nvarchar">
+          <Parameter Name="QTYInStock" Type="int" Mode="In" />
+          <Parameter Name="MinimalAmount" Type="int" Mode="In" />
+        </Function>
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
@@ -210,6 +230,17 @@
           <EntitySet Name="SuplierType" EntityType="Self.SuplierType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VW_MaterialDetails" EntityType="Self.VW_MaterialDetails" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VW_MaterialDetails].[Тип материала] AS [Тип материала], 
+    [VW_MaterialDetails].[Наименование материала] AS [Наименование материала], 
+    [VW_MaterialDetails].[Количество на складе] AS [Количество на складе], 
+    [VW_MaterialDetails].[Количество возможных поставщиков] AS [Количество возможных поставщиков], 
+    [VW_MaterialDetails].[Текущая стоимость] AS [Текущая стоимость], 
+    [VW_MaterialDetails].[Кол-во на начало месаца] AS [Кол-во на начало месаца], 
+    [VW_MaterialDetails].[Описание] AS [Описание]
+    FROM [dbo].[VW_MaterialDetails] AS [VW_MaterialDetails]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="VW_MaterialSuplier" EntityType="Self.VW_MaterialSuplier" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [VW_MaterialSuplier].[MaterialType] AS [MaterialType], 
@@ -218,7 +249,8 @@
     [VW_MaterialSuplier].[QtyInStock] AS [QtyInStock], 
     [VW_MaterialSuplier].[Supliers] AS [Supliers], 
     [VW_MaterialSuplier].[PhotoPath] AS [PhotoPath], 
-    [VW_MaterialSuplier].[Price] AS [Price]
+    [VW_MaterialSuplier].[Price] AS [Price], 
+    [VW_MaterialSuplier].[QTYColor] AS [QTYColor]
     FROM [dbo].[VW_MaterialSuplier] AS [VW_MaterialSuplier]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK__Material__Materi__2E1BDC42" Association="Self.FK__Material__Materi__2E1BDC42">
@@ -342,6 +374,7 @@
           <Property Name="Supliers" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
           <Property Name="PhotoPath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="QTYColor" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK__Material__Materi__2E1BDC42">
           <End Role="MaterialType" Type="Self.MaterialType" Multiplicity="1" />
@@ -454,6 +487,7 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="VW_MaterialDetails" EntityType="HandsClothesModel.VW_MaterialDetails" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -466,6 +500,19 @@
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="VW_MaterialDetails">
+          <Key>
+            <PropertyRef Name="Наименование_материала" />
+            <PropertyRef Name="Количество_на_складе" />
+          </Key>
+          <Property Name="Тип_материала" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Наименование_материала" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Количество_на_складе" Type="Int32" Nullable="false" />
+          <Property Name="Количество_возможных_поставщиков" Type="Int32" />
+          <Property Name="Текущая_стоимость" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="Кол_во_на_начало_месаца" Type="Int32" />
+          <Property Name="Описание" Type="String" MaxLength="53" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -550,6 +597,7 @@
           <EntitySetMapping Name="VW_MaterialSuplier">
             <EntityTypeMapping TypeName="HandsClothesModel.VW_MaterialSuplier">
               <MappingFragment StoreEntitySet="VW_MaterialSuplier">
+                <ScalarProperty Name="QTYColor" ColumnName="QTYColor" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="MaterialType" ColumnName="MaterialType" />
                 <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
@@ -592,6 +640,19 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="Хранилище HandsClothesModel.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="Хранилище HandsClothesModel.sp_upgraddiagrams" />
+          <EntitySetMapping Name="VW_MaterialDetails">
+            <EntityTypeMapping TypeName="HandsClothesModel.VW_MaterialDetails">
+              <MappingFragment StoreEntitySet="VW_MaterialDetails">
+                <ScalarProperty Name="Описание" ColumnName="Описание" />
+                <ScalarProperty Name="Кол_во_на_начало_месаца" ColumnName="Кол-во на начало месаца" />
+                <ScalarProperty Name="Текущая_стоимость" ColumnName="Текущая стоимость" />
+                <ScalarProperty Name="Количество_возможных_поставщиков" ColumnName="Количество возможных поставщиков" />
+                <ScalarProperty Name="Количество_на_складе" ColumnName="Количество на складе" />
+                <ScalarProperty Name="Наименование_материала" ColumnName="Наименование материала" />
+                <ScalarProperty Name="Тип_материала" ColumnName="Тип материала" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
