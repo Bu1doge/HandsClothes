@@ -71,7 +71,8 @@
         <!--Лист материалов-->
         <ListView Grid.Row="2"
                   x:Name="MaterialLV"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  SelectionChanged="MaterialLV_SelectionChanged">
             
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -81,7 +82,7 @@
                         Height="120"
                         Margin="5">
                         
-                        <Grid Background="{Binding Path=QTYColor}">
+                        <Grid Background="{Binding Path=QTYColor}" Tag="{Binding Path=MaterialId}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
                                 <ColumnDefinition Width="1*"/>
@@ -146,12 +147,14 @@
         </ListView>
 
         <Button Grid.Row="3" 
+                Name="MinimalChange_BTN"
                 VerticalAlignment="Center" 
                 HorizontalAlignment="Left"
                 Margin="20, 0, 0, 0" 
                 FontSize="16" 
-                Content="Изменить мин. знач."
+                Content="Изменить минимальное количество на ..."
                 Background="White"
+                Visibility="Hidden"
                 Click="MinimalChange_Click"/>
 
         <WrapPanel Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 20, 0">

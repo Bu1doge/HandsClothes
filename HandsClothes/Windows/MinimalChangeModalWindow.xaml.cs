@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using HandsClothes.EFData;
 
 namespace HandsClothes.Windows
 {
@@ -21,14 +22,40 @@ namespace HandsClothes.Windows
             InitializeComponent();
         }
 
-        private void Accept_Click(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
+
+            NewMinimalValTXT.Text = DataFrame.Context.Material.Max(i => i.MinimalAmount).ToString();
         }
 
-        public string NewMinimalVal
+        private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            get { return NewMinimalValTXT.Text; }
+            string TextBoxVal = NewMinimalValTXT.Text.Trim();
+            int NewVal;
+
+            if (string.IsNullOrEmpty(TextBoxVal))
+            {
+                MessageBox.Show("Введите значение", "Ошибка!", MessageBoxButton.OK);
+            }
+            else
+            {
+                if (int.TryParse(TextBoxVal, out NewVal))
+                {
+                    if (MessageBox.Show("Вы уверены, что хотите применить эти значения", "Уверены?", MessageBoxButton.YesNoCancel) == MessageBoxResult.Yes)
+                    {
+                        this.DialogResult = true;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Введите числовое значение", "Ошибка!", MessageBoxButton.OK);
+                }
+            }
+        }
+
+        public int NewMinimalVal
+        {
+            get { return int.Parse(NewMinimalValTXT.Text.Trim()); }
         }
     }
 }

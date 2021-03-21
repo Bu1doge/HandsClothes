@@ -200,24 +200,46 @@ namespace HandsClothes.Pages
 
         private void MinimalChange_Click(object sender, RoutedEventArgs e)
         {
+            // Проверка количества выбранных записей
             if (MaterialLV.SelectedItems.Count == 0)
             {
-                MessageBox.Show("Ошибка!", "Не выбрано ни одной записи для изменения, пожалуйста выберете запись/и и повторите попытку", MessageBoxButton.OK);
+                MessageBox.Show("Не выбрано ни одной записи для изменения, пожалуйста выберете запись/и и повторите попытку", "Ошибка!", MessageBoxButton.OK);
             }
-            else
+            else if(MaterialLV.SelectedItems.Count > 1)
             {
-                //List<ListViewItem> SelectedItems = (List<ListViewItem>)MaterialLV.SelectedItems;
+                var SelectedItems = MaterialLV.SelectedItems;
+                MinimalChangeModalWindow NewValWindow = new MinimalChangeModalWindow();
 
-                //MinimalChangeModalWindow NewValWindow = new MinimalChangeModalWindow();
+                //Изменение каждой записи
+                if (NewValWindow.ShowDialog() == true)
+                {
+                    foreach (var material in SelectedItems)
+                    {
+                        if (material is VW_MaterialSuplier materialViewItem)
+                        {
+                            Material PickedMaterial = DataFrame.Context.Material.Find(materialViewItem.MaterialId);
 
-                //if (NewValWindow.ShowDialog() == true)
-                //{
-                //    foreach (ListViewItem elem in SelectedItems)
-                //    {
+                            PickedMaterial.MinimalAmount = NewValWindow.NewMinimalVal;
+                        }
+                    }
 
-                //    }
-                //}
+                    DataFrame.Context.SaveChanges();
+                }
             }
+            else if (MaterialLV.SelectedItem is VW_MaterialSuplier materialViewItem)
+            {
+                MinimalChangeModalWindow NewValWindow = new MinimalChangeModalWindow();
+
+                if (NewValWindow.ShowDialog() == true)
+                {
+                    Material PickedMaterial = DataFrame.Context.Material.Find(materialViewItem.MaterialId);
+
+                    PickedMaterial.MinimalAmount = NewValWindow.NewMinimalVal;
+                    DataFrame.Context.SaveChanges();
+                }
+            }
+
+            ListViewRefresh();
         }
 
         //Обработчики событий изменения полей фильтров и сортироваки
@@ -235,6 +257,12 @@ namespace HandsClothes.Pages
         private void SearchTxt_TextChanged(object sender, TextChangedEventArgs e)
         {
             ListViewRefresh();
+        }
+
+        //Обработка события изменения выделения в listview для появления кнопки изменения минимального количества
+        private void MaterialLV_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MinimalChange_BTN.Visibility = MaterialLV.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Hidden;
         }
     }
 }

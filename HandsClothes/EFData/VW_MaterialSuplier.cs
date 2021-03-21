@@ -22,5 +22,6 @@ namespace HandsClothes.EFData
         public string PhotoPath { get; set; }
         public decimal Price { get; set; }
         public string QTYColor { get; set; }
+        public int MaterialId { get; set; }
     }
 }

@@ -104,6 +104,7 @@
             <PropertyRef Name="MinimalAmount" />
             <PropertyRef Name="QtyInStock" />
             <PropertyRef Name="Price" />
+            <PropertyRef Name="MaterialId" />
           </Key>
           <Property Name="MaterialType" Type="nvarchar" MaxLength="50" />
           <Property Name="MaterialName" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -113,6 +114,7 @@
           <Property Name="PhotoPath" Type="nvarchar" MaxLength="255" />
           <Property Name="Price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
           <Property Name="QTYColor" Type="nvarchar" MaxLength="7" />
+          <Property Name="MaterialId" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK__Material__Materi__2E1BDC42">
           <End Role="MaterialType" Type="Self.MaterialType" Multiplicity="1" />
@@ -250,7 +252,8 @@
     [VW_MaterialSuplier].[Supliers] AS [Supliers], 
     [VW_MaterialSuplier].[PhotoPath] AS [PhotoPath], 
     [VW_MaterialSuplier].[Price] AS [Price], 
-    [VW_MaterialSuplier].[QTYColor] AS [QTYColor]
+    [VW_MaterialSuplier].[QTYColor] AS [QTYColor], 
+    [VW_MaterialSuplier].[MaterialId] AS [MaterialId]
     FROM [dbo].[VW_MaterialSuplier] AS [VW_MaterialSuplier]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK__Material__Materi__2E1BDC42" Association="Self.FK__Material__Materi__2E1BDC42">
@@ -366,6 +369,7 @@
             <PropertyRef Name="MinimalAmount" />
             <PropertyRef Name="QtyInStock" />
             <PropertyRef Name="Price" />
+            <PropertyRef Name="MaterialId" />
           </Key>
           <Property Name="MaterialType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="MaterialName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
@@ -375,6 +379,7 @@
           <Property Name="PhotoPath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
           <Property Name="QTYColor" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="MaterialId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK__Material__Materi__2E1BDC42">
           <End Role="MaterialType" Type="Self.MaterialType" Multiplicity="1" />
@@ -597,6 +602,7 @@
           <EntitySetMapping Name="VW_MaterialSuplier">
             <EntityTypeMapping TypeName="HandsClothesModel.VW_MaterialSuplier">
               <MappingFragment StoreEntitySet="VW_MaterialSuplier">
+                <ScalarProperty Name="MaterialId" ColumnName="MaterialId" />
                 <ScalarProperty Name="QTYColor" ColumnName="QTYColor" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="MaterialType" ColumnName="MaterialType" />
