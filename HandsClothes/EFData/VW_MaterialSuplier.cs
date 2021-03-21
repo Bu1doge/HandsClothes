@@ -20,5 +20,6 @@ namespace HandsClothes.EFData
         public int QtyInStock { get; set; }
         public string Supliers { get; set; }
         public string PhotoPath { get; set; }
+        public decimal Price { get; set; }
     }
 }

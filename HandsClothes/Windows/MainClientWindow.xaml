@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
 
         <Frame x:Name="PageBrowser" Grid.Row="0" Margin="5" NavigationUIVisibility="Hidden">
-            
+
         </Frame>
     </Grid>
 </Window>

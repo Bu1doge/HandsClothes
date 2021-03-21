@@ -49,14 +49,17 @@
                      Width="200" 
                      FontFamily="Candara" 
                      FontSize="20" 
-                     Margin="10, 5"/>
+                     Margin="10, 5"
+                     DropDownClosed ="SortCMB_SelectionChanged"/>
 
             <ComboBox x:Name="FilterCMB" 
                      VerticalAlignment="Center" 
                      Width="200" 
                      FontFamily="Candara" 
                      FontSize="20" 
-                     Margin="5"/>
+                     Margin="5"
+                     DropDownClosed="FilterCMB_SelectionChanged"/>
+
         </StackPanel>
 
         <!--Лист материалов-->
@@ -137,11 +140,11 @@
         </ListView>
 
         <WrapPanel Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, 20, 0">
-            <Button x:Name="Back"    Background="White" Margin="5" FontSize="12" Click="Back_Click"    Content="Назад"/>
-            <Button x:Name="First"   Background="White" Margin="5" FontSize="12" Click="PageNum_Click" Content="1"/>
-            <Button x:Name="Second"  Background="White" Margin="5" FontSize="12" Click="PageNum_Click" Content="2"/>
-            <Button x:Name="Third"   Background="White" Margin="5" FontSize="12" Click="PageNum_Click" Content="3"/>
-            <Button x:Name="Forward" Background="White" Margin="5" FontSize="12" Click="Forward_Click" Content="Вперед"/>
+            <Button x:Name="BTN_Pageack"     BorderThickness="0" Background="White" Margin="5" FontSize="12" Click="Back_Click"    Content="Назад"/>
+            <Button x:Name="BTN_PageFirst"   BorderThickness="0" Background="White" Margin="5" FontSize="12" Click="PageNum_Click" Content="1"/>
+            <Button x:Name="BTN_PageSecond"  BorderThickness="0" Background="White" Margin="5" FontSize="12" Click="PageNum_Click" Content="2"/>
+            <Button x:Name="BTN_PageThird"   BorderThickness="0" Background="White" Margin="5" FontSize="12" Click="PageNum_Click" Content="3"/>
+            <Button x:Name="BTN_PageForward" BorderThickness="0" Background="White" Margin="5" FontSize="12" Click="Forward_Click" Content="Вперед"/>
         </WrapPanel>
     </Grid>
 </Page>

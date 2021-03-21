@@ -30,6 +30,7 @@ namespace HandsClothes.EFData
         public int MinimalAmount { get; set; }
         public int InPackAmount { get; set; }
         public int UnitId { get; set; }
+        public string Description { get; set; }
     
         public virtual MaterialType MaterialType { get; set; }
         public virtual Unit Unit { get; set; }
