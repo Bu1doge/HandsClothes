@@ -97,6 +97,28 @@
           <Property Name="Описание" Type="nvarchar" MaxLength="53" />
         </EntityType>
         <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "HandsClothes.dbo.VW_MaterialDetails2" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="VW_MaterialDetails2">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="MaterialName" />
+            <PropertyRef Name="Price" />
+            <PropertyRef Name="InPackAmount" />
+            <PropertyRef Name="QtyInStock" />
+            <PropertyRef Name="MinimalAmount" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="MaterialName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+          <Property Name="UnitName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Price" Type="decimal" Precision="10" Scale="2" Nullable="false" />
+          <Property Name="InPackAmount" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="PhotoPath" Type="nvarchar" MaxLength="255" />
+          <Property Name="QtyInStock" Type="int" Nullable="false" />
+          <Property Name="MinimalAmount" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
 предупреждение 6002: В таблице или представлении "HandsClothes.dbo.VW_MaterialSuplier" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
         <EntityType Name="VW_MaterialSuplier">
           <Key>
@@ -242,6 +264,20 @@
     [VW_MaterialDetails].[Кол-во на начало месаца] AS [Кол-во на начало месаца], 
     [VW_MaterialDetails].[Описание] AS [Описание]
     FROM [dbo].[VW_MaterialDetails] AS [VW_MaterialDetails]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="VW_MaterialDetails2" EntityType="Self.VW_MaterialDetails2" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [VW_MaterialDetails2].[Id] AS [Id], 
+    [VW_MaterialDetails2].[MaterialName] AS [MaterialName], 
+    [VW_MaterialDetails2].[Type] AS [Type], 
+    [VW_MaterialDetails2].[UnitName] AS [UnitName], 
+    [VW_MaterialDetails2].[Price] AS [Price], 
+    [VW_MaterialDetails2].[InPackAmount] AS [InPackAmount], 
+    [VW_MaterialDetails2].[Description] AS [Description], 
+    [VW_MaterialDetails2].[PhotoPath] AS [PhotoPath], 
+    [VW_MaterialDetails2].[QtyInStock] AS [QtyInStock], 
+    [VW_MaterialDetails2].[MinimalAmount] AS [MinimalAmount]
+    FROM [dbo].[VW_MaterialDetails2] AS [VW_MaterialDetails2]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="VW_MaterialSuplier" EntityType="Self.VW_MaterialSuplier" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -493,6 +529,7 @@
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
           <EntitySet Name="VW_MaterialDetails" EntityType="HandsClothesModel.VW_MaterialDetails" />
+          <EntitySet Name="VW_MaterialDetails2" EntityType="HandsClothesModel.VW_MaterialDetails2" />
         </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
@@ -517,6 +554,26 @@
           <Property Name="Текущая_стоимость" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
           <Property Name="Кол_во_на_начало_месаца" Type="Int32" />
           <Property Name="Описание" Type="String" MaxLength="53" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="VW_MaterialDetails2">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="MaterialName" />
+            <PropertyRef Name="Price" />
+            <PropertyRef Name="InPackAmount" />
+            <PropertyRef Name="QtyInStock" />
+            <PropertyRef Name="MinimalAmount" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="MaterialName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UnitName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+          <Property Name="InPackAmount" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PhotoPath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="QtyInStock" Type="Int32" Nullable="false" />
+          <Property Name="MinimalAmount" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -656,6 +713,22 @@
                 <ScalarProperty Name="Количество_на_складе" ColumnName="Количество на складе" />
                 <ScalarProperty Name="Наименование_материала" ColumnName="Наименование материала" />
                 <ScalarProperty Name="Тип_материала" ColumnName="Тип материала" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VW_MaterialDetails2">
+            <EntityTypeMapping TypeName="HandsClothesModel.VW_MaterialDetails2">
+              <MappingFragment StoreEntitySet="VW_MaterialDetails2">
+                <ScalarProperty Name="MinimalAmount" ColumnName="MinimalAmount" />
+                <ScalarProperty Name="QtyInStock" ColumnName="QtyInStock" />
+                <ScalarProperty Name="PhotoPath" ColumnName="PhotoPath" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="InPackAmount" ColumnName="InPackAmount" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="UnitName" ColumnName="UnitName" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

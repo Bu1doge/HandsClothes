@@ -20,6 +20,8 @@ namespace HandsClothes.Pages
 {
     public partial class ListOfMaterialsPage : Page
     {
+        NavigationService Nav;
+
         private int PageNumber = 1;
         private int NumberOfPages;
 
@@ -30,6 +32,8 @@ namespace HandsClothes.Pages
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            Nav = NavigationService.GetNavigationService(this);
+
             List<string> SortsList = new List<string>(){"Наименование убыв.",
                                                         "Наименование возр.",
                                                         "Остаток на складе убыв.",
@@ -263,6 +267,28 @@ namespace HandsClothes.Pages
         private void MaterialLV_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             MinimalChange_BTN.Visibility = MaterialLV.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        private void Add_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            Nav.Navigate(new Pages.AddEditMaterialPage(1));
+        }
+
+        private void Edit_BTN_Click(object sender, RoutedEventArgs e)
+        {
+            if (MaterialLV.SelectedItems.Count == 0)
+            {
+
+            }
+            else if (MaterialLV.SelectedItems.Count > 1)
+            {
+
+            }
+            else if (MaterialLV.SelectedItem is VW_MaterialSuplier materialViewItem)
+            {
+                VW_MaterialDetails2 material = DataFrame.Context.VW_MaterialDetails2.Where(i => i.Id == materialViewItem.MaterialId).FirstOrDefault();
+                Nav.Navigate(new Pages.AddEditMaterialPage(2, material));
+            }
         }
     }
 }

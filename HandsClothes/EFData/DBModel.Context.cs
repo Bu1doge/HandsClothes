@@ -36,6 +36,7 @@ namespace HandsClothes.EFData
         public virtual DbSet<Unit> Unit { get; set; }
         public virtual DbSet<VW_MaterialSuplier> VW_MaterialSuplier { get; set; }
         public virtual DbSet<VW_MaterialDetails> VW_MaterialDetails { get; set; }
+        public virtual DbSet<VW_MaterialDetails2> VW_MaterialDetails2 { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {
