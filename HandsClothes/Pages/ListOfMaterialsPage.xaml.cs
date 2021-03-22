@@ -113,6 +113,7 @@ namespace HandsClothes.Pages
 
             //Выборка элементов для страниц
             NumberOfPages = MaterialList.Count / 15 + (MaterialList.Count % 15 > 0 ? 1 : 0);
+
             RecordsAmountTXTB.Text = MaterialList.Count.ToString() + " из " + RecordsAmount.ToString();
             MaterialList = MaterialList.Skip((PageNumber - 1) * 15).Take(15).ToList();
     
@@ -204,45 +205,44 @@ namespace HandsClothes.Pages
 
         private void MinimalChange_Click(object sender, RoutedEventArgs e)
         {
+            //Модальное окно
+            MinimalChangeModalWindow NewValWindow = new MinimalChangeModalWindow();
+            var SelectedMaterials = MaterialLV.SelectedItems;
+
             // Проверка количества выбранных записей
-            if (MaterialLV.SelectedItems.Count == 0)
+            if (SelectedMaterials.Count == 0)
             {
                 MessageBox.Show("Не выбрано ни одной записи для изменения, пожалуйста выберете запись/и и повторите попытку", "Ошибка!", MessageBoxButton.OK);
             }
-            else if(MaterialLV.SelectedItems.Count > 1)
+            else if(SelectedMaterials.Count > 1)
             {
-                var SelectedItems = MaterialLV.SelectedItems;
-                MinimalChangeModalWindow NewValWindow = new MinimalChangeModalWindow();
-
                 //Изменение каждой записи
                 if (NewValWindow.ShowDialog() == true)
                 {
-                    foreach (var material in SelectedItems)
+                    foreach (var materialElement in SelectedMaterials)
                     {
-                        if (material is VW_MaterialSuplier materialViewItem)
+                        if (materialElement is VW_MaterialSuplier material)
                         {
-                            Material PickedMaterial = DataFrame.Context.Material.Find(materialViewItem.MaterialId);
-
-                            PickedMaterial.MinimalAmount = NewValWindow.NewMinimalVal;
+                            DataFrame.Context.Material.Find(material.MaterialId).MinimalAmount = NewValWindow.NewMinimalVal;
                         }
                     }
 
-                    DataFrame.Context.SaveChanges();
+                    
                 }
             }
-            else if (MaterialLV.SelectedItem is VW_MaterialSuplier materialViewItem)
+            else if (SelectedMaterials.Count == 1)
             {
-                MinimalChangeModalWindow NewValWindow = new MinimalChangeModalWindow();
+                VW_MaterialSuplier SelectedMaterial = (VW_MaterialSuplier)MaterialLV.SelectedItem;
 
+                //Если окно закрылось по кнопке "изменить", выделенная запись изменится
                 if (NewValWindow.ShowDialog() == true)
                 {
-                    Material PickedMaterial = DataFrame.Context.Material.Find(materialViewItem.MaterialId);
-
-                    PickedMaterial.MinimalAmount = NewValWindow.NewMinimalVal;
-                    DataFrame.Context.SaveChanges();
+                    DataFrame.Context.Material.Find(SelectedMaterial.MaterialId).MinimalAmount = NewValWindow.NewMinimalVal;
                 }
             }
 
+            DataFrame.Context.SaveChanges();
+            NewValWindow.Close();
             ListViewRefresh();
         }
 
@@ -266,23 +266,24 @@ namespace HandsClothes.Pages
         //Обработка события изменения выделения в listview для появления кнопки изменения минимального количества
         private void MaterialLV_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MinimalChange_BTN.Visibility = MaterialLV.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Hidden;
+            MinimalChange_BTN.Visibility = MaterialLV.SelectedItems.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void Add_BTN_Click(object sender, RoutedEventArgs e)
         {
-            Nav.Navigate(new Pages.AddEditMaterialPage(1));
+            Nav.Navigate(new AddEditMaterialPage(1));
+            ListViewRefresh();
         }
 
         private void Edit_BTN_Click(object sender, RoutedEventArgs e)
         {
             if (MaterialLV.SelectedItems.Count == 0)
             {
-
+                MessageBox.Show("Пожалуйста, выберете материал, который вы хотите изменить","Ошибка!");
             }
             else if (MaterialLV.SelectedItems.Count > 1)
             {
-
+                MessageBox.Show("Пожалуйста, выберете материал, который вы хотите изменить", "Ошибка!");
             }
             else if (MaterialLV.SelectedItem is VW_MaterialSuplier materialViewItem)
             {

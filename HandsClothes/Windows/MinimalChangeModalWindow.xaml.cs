@@ -24,7 +24,6 @@ namespace HandsClothes.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
             NewMinimalValTXT.Text = DataFrame.Context.Material.Max(i => i.MinimalAmount).ToString();
         }
 
@@ -41,6 +40,7 @@ namespace HandsClothes.Windows
             {
                 if (int.TryParse(TextBoxVal, out NewVal))
                 {
+                    //Нажатие на кнопку "изменить" возвращает тру как dialogResult, если последний получает значение, то окно, открытое через ShowDialog закрывается
                     if (MessageBox.Show("Вы уверены, что хотите применить эти значения", "Уверены?", MessageBoxButton.YesNoCancel) == MessageBoxResult.Yes)
                     {
                         this.DialogResult = true;

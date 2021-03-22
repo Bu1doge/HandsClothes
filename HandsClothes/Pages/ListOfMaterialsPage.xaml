@@ -73,7 +73,7 @@
                   x:Name="MaterialLV"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   SelectionChanged="MaterialLV_SelectionChanged">
-            
+
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="Black" 
@@ -81,7 +81,7 @@
                         MinWidth="600"
                         Height="120"
                         Margin="5">
-                        
+
                         <Grid Background="{Binding Path=QTYColor}" Tag="{Binding Path=MaterialId}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="120"/>
@@ -89,7 +89,7 @@
                                 <ColumnDefinition Width="160"/>
                             </Grid.ColumnDefinitions>
 
-                            <Image Stretch="Fill" Source="{Binding Path=GetImage}"/>
+                            <Image Stretch="Fill" Source="{Binding Path=GetImage}" />
 
                             <StackPanel Grid.Column="1">
                                 <WrapPanel Grid.Column="1" Margin="5, 0" HorizontalAlignment="Left">
@@ -146,18 +146,6 @@
             </ListBox.ItemTemplate>
         </ListView>
 
-        <Button Grid.Row="3" 
-                Name="MinimalChange_BTN"
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Left"
-                Margin="20, 0, 0, 0" 
-                FontSize="16" 
-                Content="Изменить минимальное количество на ..."
-                Background="White"
-                Visibility="Hidden"
-                Click="MinimalChange_Click"/>
-
-
         <WrapPanel Grid.Row="3" 
                    VerticalAlignment="Center" 
                    HorizontalAlignment="Center">
@@ -175,6 +163,14 @@
                     Content="Изменить"
                     Background="White"
                     Click="Edit_BTN_Click"/>
+
+            <Button Name="MinimalChange_BTN"
+                    Margin="5" 
+                    FontSize="16" 
+                    Content="Изменить минимальное количество на ..."
+                    Background="White"
+                    Visibility="Collapsed"
+                    Click="MinimalChange_Click"/>
         </WrapPanel>
 
 

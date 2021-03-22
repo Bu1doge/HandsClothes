@@ -31,6 +31,7 @@
                    Margin="5" 
                    HorizontalAlignment="Left">
             </Image>
+            
             <TextBlock Name="HeaderTXTB"
                        Text=" материала" 
                        Margin="10, 5" 
@@ -65,7 +66,7 @@
             <TextBox Grid.Column="1" Grid.Row="1" FontSize="12" Margin="4" Name="MaterialNameTXT"/>
 
             <TextBlock Text="Тип материала:" Grid.Row="2" VerticalAlignment="Center" FontSize="12"/>
-            <TextBox Grid.Column="1" Grid.Row="2" FontSize="12" Margin="4" Name="MaterialTypeTXT"/>
+            <ComboBox Grid.Column="1" Grid.Row="2" FontSize="12" Margin="4" Name="MaterialTypeCMB"/>
 
             <TextBlock Text="Количество на складе:" Grid.Row="3" VerticalAlignment="Center" FontSize="12"/>
             <TextBox Grid.Column="1" Grid.Row="3" FontSize="12" Margin="4" Name="QTYInStockTXT"/>
@@ -84,6 +85,29 @@
 
             <TextBlock Text="Подробное описание:" Grid.Row="8" VerticalAlignment="Center" FontSize="12"/>
             <TextBox Grid.Column="1" Grid.Row="8" FontSize="12" Margin="4" Name="DescriptionTXT"/>
+        </Grid>
+
+        <Grid x:Name="Footer" Grid.Row="3" Grid.ColumnSpan="3">
+            <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Button x:Name="Accept_BTN" 
+                        Margin="5" 
+                        FontSize="16" 
+                        Content=""
+                        Background="White"
+                        Click="Accept_BTN_Click"/>
+                <Button x:Name="Refill_BTN"
+                        Margin="5" 
+                        FontSize="16" 
+                        Content="Сброс полей"
+                        Background="White"
+                        Click="Refill_BTN_Click"/>
+                <Button x:Name="Decline_BTN"
+                        Margin="5" 
+                        FontSize="16" 
+                        Content="Отмена"
+                        Background="White"
+                        Click="Decline_BTN_Click"/>
+            </WrapPanel>
         </Grid>
     </Grid>
 </Page>
